@@ -1,1 +1,1 @@
-# Avalia-o-final-Paradigmas
+# Avaliação final:Paradigmas
