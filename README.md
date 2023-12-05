@@ -14,7 +14,7 @@
 
 #### Uma rede social é um ambiente complexo que permite que os usuários se conectem, interajam e compartilhem informações e interesses através da internet. A fim de simplificar para o projeto podemos definir que uma rede social é uma composição de __Usuarios__ e __Postagens__. Na rede é possível registrar e remover um usuário, adicionar uma postagem, achar um usuário e achar um post, além dos métodos acessores necessários.
 
-##### Uma postagem possui um identificador, um autor, o conteúdo da postagem, uma lista com os usuários que gostaram da postagem e outra lista que contém os __comentarios__ feitos naquela postagem. Na postagem, pode-se adicionar o usuário que curtiu a postagem na lista de likes e adicionar um comentário na lista de comentários, além dos métodos acessores necessários.
+##### Uma postagem possui um numero inteiro de identificador, uma string de autor, o conteúdo da postagem em uma string, uma lista com os usuários que gostaram da postagem e outra lista que contém os __comentarios__ feitos naquela postagem. Na postagem, pode-se adicionar o usuário que curtiu a postagem na lista de likes e adicionar um comentário na lista de comentários, além dos métodos acessores necessários.
 
 ##### Um comentário possui um autor e seu conteúdo.
 
@@ -22,7 +22,7 @@
 
 ##### Uma conta possui quatro listas: uma com aqueles que um usuário em questão segue, uma com aqueles que seguem esse usuário, uma com as mensagens enviadas pelo usuários e outra que tem as mensagens enviadas ao usuário. A conta permite seguir e deixar de seguir outros usuários e enviar mensagens para amigos, além de conseguir acessar os parâmetros necessários por métodos. 
 
-#####  Um usuário possui, além das listas advindas da conta, um identificador, um username, uma lista de interações realizadas por ele, e um hashmap com aqueles que o usuário interagiu e o valor somado de suas interações. Com o usuário é possível adicionar, remover e procurar interações, definir os níveis de interação baseado nas interações preexistentes e acessar o id e username com os métodos acessores. 
+#####  Um usuário possui, além das listas advindas da conta, um numero inteiro de identificador, um username string, uma lista de interações realizadas por ele, e um hashmap com aqueles que o usuário interagiu e o valor somado de suas interações. Com o usuário é possível adicionar, remover e procurar interações, definir os níveis de interação baseado nas interações preexistentes e acessar o id e username com os métodos acessores. 
 
 ---
 
