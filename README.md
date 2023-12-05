@@ -10,19 +10,80 @@
 
 #### Analisando o enunciado do propósito podemos perceber 3 núcleos-chave: __Interações__, __Redes Sociais__ e __Usuários__.
 
-#### Começando pela parte mais importante do propósito: __Interações__. Para ocorrer uma interação em uma rede social são necessários uma ação, dois usuarios, um que realiza a ação e outro que a recebe, e, com a finalidade de medir o nível de interação, um valor numérico.
+#### Começando pela parte mais importante do propósito: __Interações__. Para ocorrer uma interação em uma rede social são necessários uma ação, dois usuarios, um que realiza a ação e outro que a recebe, e, com a finalidade de medir o nível de interação, um valor numérico. As interacoes possuem somente os metodos acessores.
+    Atributos:
+        - action: Action
+        - user1: User
+        - user2: User
+        - value: int
+
+    Metodos:
+        - getAction: Action
+        - getUser1: User
+        - getUser2: User
+        - getValue: int
 
 #### Uma rede social é um ambiente complexo que permite que os usuários se conectem, interajam e compartilhem informações e interesses através da internet. A fim de simplificar para o projeto podemos definir que uma rede social é uma composição de __Usuarios__ e __Postagens__. Na rede é possível registrar e remover um usuário, adicionar uma postagem, achar um usuário e achar um post, além dos métodos acessores necessários.
+    Atributos:
+        - users: List<User>
+        - posts: List<Post>
+
+    Metodos:
+        - registerUser: void
+        - removeUser: void
+        - createPost: void
+        - findUser: User
+        - findPost: Post
 
 ##### Uma postagem possui um numero inteiro de identificador, uma string de autor, o conteúdo da postagem em uma string, uma lista com os usuários que gostaram da postagem e outra lista que contém os __comentarios__ feitos naquela postagem. Na postagem, pode-se adicionar o usuário que curtiu a postagem na lista de likes e adicionar um comentário na lista de comentários, além dos métodos acessores necessários.
+    Atributos:
+        - id: int
+        - author: User
+        - content: string
+        - likes: List<User>
+        - comments: List<Comment>
+
+    Metodos:
+        - getId: int
+        - getAuthor: User
+        - getContent: string
+        - addLike: void
+        - addComment: void
 
 ##### Um comentário possui um autor e seu conteúdo.
+    Atributos:
+        - author: User
+        - content: string
 
 #### Um usuário é uma pessoa que criou uma conta em uma rede social. Nisso temos dois conceitos que se relacionam: __Conta__ e __Usuario__.
 
 ##### Uma conta possui quatro listas: uma com aqueles que um usuário em questão segue, uma com aqueles que seguem esse usuário, uma com as mensagens enviadas pelo usuários e outra que tem as mensagens enviadas ao usuário. A conta permite seguir e deixar de seguir outros usuários e enviar mensagens para amigos, além de conseguir acessar os parâmetros necessários por métodos. 
+    Atributos:
+        - follows: List<User>
+        - followers: List<User>
+        - sentMessages: List<Message>
+        - receivedMessages: List<Message>
+
+    Metodos:
+        - isFollowing: boolean
+        - follow: void
+        - unfollow: void
+        - sendMessage: void
 
 #####  Um usuário possui, além das listas advindas da conta, um numero inteiro de identificador, um username string, uma lista de interações realizadas por ele, e um hashmap com aqueles que o usuário interagiu e o valor somado de suas interações. Com o usuário é possível adicionar, remover e procurar interações, definir os níveis de interação baseado nas interações preexistentes e acessar o id e username com os métodos acessores. 
+    Atributos:
+        - userId: int
+        - username: string
+        - interactions: List<interaction>
+        - interactionLevel: HashMap<User, int>
+
+    Metodos:
+        - getUserId: int
+        - getUsername: string
+        - addInteraction: void
+        - removeInteraction: void
+        - findInteraction: Interaction
+        - getInteractionLevels: void
 
 ---
 
@@ -159,7 +220,7 @@ Antes disso precisamos implementar a classe de mensagens.
             return null;
         }
 
-        public void interactionLevels(){
+        public void getInteractionLevels(){
             for (Interaction i : this.interactions) {
                 if (!(this.interactionLevels.containsKey(i.getUser2()))) {
                     this.interactionLevels.put(i.getUser2(), i.getValue());
@@ -421,10 +482,22 @@ Esse foi meu projeto orientado a objetos.
                      append(Users, User, List),
                      retract(network(Users, Posts)),
                      assert(network(List, Posts)).
+
+    removeUser(User) :- user(User),
+                     network(Users, Posts), 
+                     remove(Users, User, List),
+                     retract(network(Users, Posts)),
+                     assert(network(List, Posts)).
     
     addPost(Post) :- post(Post),
                      network(Users, Posts), 
                      append(Posts, Post, List),
+                     retract(network(Users, Posts)),
+                     assert(network(Users, List)).
+    
+    removePost(Post) :- post(Post),
+                     network(Users, Posts), 
+                     remove(Posts, Post, List),
                      retract(network(Users, Posts)),
                      assert(network(Users, List)).
     
@@ -462,4 +535,8 @@ Esse foi meu projeto orientado a objetos.
                                   retract(post(Author, Content, Likes, Comments)),
                                   assert(post(Author, Content, Likes, List)),
                                   assert(Cauthor, Author, action(comment, 3)).
+    
+    findUser(User) :- user(User), network(Users, _), member(User, Users).
+
+    findPost(Post) :- post(Post), network(_, Posts), member(Post, Posts).
 ```
