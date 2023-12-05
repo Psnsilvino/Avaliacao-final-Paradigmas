@@ -32,7 +32,7 @@
 
 Antes disso precisamos implementar a classe de mensagens.
 
-class Message:
+### class Message:
 ```java
     public class Message {
         private User sender;
@@ -47,7 +47,7 @@ class Message:
     }
 ```
 
-class Account:
+### class Account:
 ```java
     import java.util.List;
     import java.util.ArrayList;
@@ -113,7 +113,7 @@ class Account:
 }
 ```
 
-class User:
+### class User:
 ```java
     import java.util.ArrayList;
     import java.util.List;
@@ -191,7 +191,7 @@ class User:
 
 Agora para implementar as interações só precisamos das ações. Sobre as ações podemos utilizar um enum:
 
-enum Action:
+### enum Action:
 ```java
     public enum Action {
         Message,
@@ -203,7 +203,7 @@ enum Action:
 
 Com isso temos todos os requisitos para a classe de interações.
 
-class Interaction:
+### class Interaction:
 ```java
     public class Interaction {
 
@@ -240,7 +240,7 @@ class Interaction:
 
 Para implementar o ultimo nucleo ainda falta implementar o codigo referente as postagens. E para as postagens falta o codigo dos comentarios.
 
-class Comment:
+### class Comment:
 ```java
     public class Comment {
         private User author;
@@ -253,7 +253,7 @@ class Comment:
     }
 ```
 
-class Post:
+### class Post:
 ```java
     import java.util.ArrayList;
     import java.util.List;
@@ -300,7 +300,7 @@ class Post:
     }
 ```
 
-class Network
+### class Network
 ```java
     import java.util.ArrayList;
     import java.util.List;
@@ -356,4 +356,110 @@ class Network
             return null;
         }
     }
+```
+
+Esse foi meu projeto orientado a objetos.
+
+---
+
+### Agora implementando em outros paradigmas
+
+### Prolog
+```prolog
+    :- dynamic follows/3.
+    :- dynamic message/3.
+    :- dynamic post/3.
+    :- dynamic interaction/3.
+    :- dynamic network/2.
+    :- dynamic interactionLevel/2.
+
+    % user(Username)
+    user(cabelo).
+    user(silencio).
+    user(mascara).
+    user(vasco).
+    user(black).
+
+    % action(Action, Value)
+    action(like, 1).
+    action(follow, 2).
+    action(comment, 3).
+    action(action(message, 5)).
+
+    % follows(User1, User2)
+    follows(cabelo, mascara).
+    follows(mascara, cabelo).
+    follows(silencio, vasco).
+    follows(vasco, silencio).
+
+    % message(Sender, Receiver, Content)
+    message(vasco, silencio, "Fala ai").
+    message(silencio, vasco, "...").
+    message(cabelo, mascara, "Bom dia").
+
+    % comment(Author, Content).
+    comment(vasco, "Vasco").
+
+    % post(Author, Content, Likes, Comments)
+    post(vasco, "Mais uma derrota do vasco", [black], []).
+    post(silencio, "...", [], [comment(vasco, "Vasco")]).
+
+    % interaction(User1, User2, Action).
+    interaction(cabelo, mascara, action(follow, 1)).
+    interaction(mascara, cabelo, action(follow, 1)).
+    interaction(silencio, vasco, action(follow, 1)).
+    interaction(vasco, silencio, action(follow, 1)).
+    interaction(cabelo, mascara, action(message, 5)).
+    interaction(vasco, silencio, action(message, 5)).
+    interaction(silencio, vasco, action(message, 5)).
+
+    % network(Users, Posts)
+    network([], []).
+
+    addUser(User) :- user(User),
+                     network(Users, Posts), 
+                     append(Users, User, List),
+                     retract(network(Users, Posts)),
+                     assert(network(List, Posts)).
+    
+    addPost(Post) :- post(Post),
+                     network(Users, Posts), 
+                     append(Posts, Post, List),
+                     retract(network(Users, Posts)),
+                     assert(network(Users, List)).
+    
+    sendMessage(Sender, Receiver, Content) :- user(Sender),
+                                              user(Receiver),
+                                              follows(Sender, Receiver),
+                                              follows(Receiver, Sender),
+                                              assert(message(Sender, Receiver, Content)),
+                                              assert(interaction(Sender, Receiver, action(message, 5))).
+    
+    addLike(Post, Liker) :- post(Post),
+                            user(Liker),
+                            post(Author, Content, Likes, Comments),
+                            append(Likes, Liker, List),
+                            retract(post(Author, Content, Likes, Comments)),
+                            assert(post(Author, Content, List, Comments)),
+                            assert(interaction(Liker, Author, action(like, 1))).
+    
+    follow(Follower, Followed) :- user(Follower),
+                                  user(Followed),
+                                  \+ follows(Follower, Followed),
+                                  assert(follows(Follower, Followed)),
+                                  assert(interaction(Follower, Followed, action(follow, 2))).
+    
+    unfollow(Unfollower, Unfollowed) :- user(Unfollower),
+                                  user(Unfollowed),
+                                  follows(Unfollower, Unfollowed),
+                                  retract(follows(Unfollower, Unfollowed)),
+                                  retract(interaction(Follower, Followed, action(follow, 2))).
+
+    commentPost(Post, Comment) :- post(Post),
+                                  post(Author, Content, Likes, Comments),
+                                  Comment(Cauthor, _),
+                                  append(Comments, Comment, List),
+                                  retract(post(Author, Content, Likes, Comments)),
+                                  assert(post(Author, Content, Likes, List)),
+                                  assert(Cauthor, Author, action(comment, 3)).
 ```
